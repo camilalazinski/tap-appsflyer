@@ -31,7 +31,8 @@ setup(
     package_data={
         'tap_appsflyer/schemas/raw_data': [
             'installations.json',
-            'in_app_events.json'
+            'in_app_events.json',
+            'organic_installs.json'
         ],
     },
     include_package_data=True,
