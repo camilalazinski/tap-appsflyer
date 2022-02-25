@@ -15,19 +15,15 @@ import singer.stats
 from singer import transform
 from singer import utils
 
-
 LOGGER = singer.get_logger()
 SESSION = requests.Session()
-
 
 CONFIG = {
     "app_id": None,
     "api_token": None
 }
 
-
 STATE = {}
-
 
 ENDPOINTS = {
     "installs": "/export/{app_id}/installs_report/v5",
@@ -60,15 +56,15 @@ def get_restricted_start_date(date: str) -> datetime.datetime:
 
 def get_start(key):
     if key in STATE:
-        return  get_restricted_start_date(STATE[key])
+        return get_restricted_start_date(STATE[key])
 
     if "start_date" in CONFIG:
-        return  get_restricted_start_date(CONFIG["start_date"])
+        return get_restricted_start_date(CONFIG["start_date"])
 
     return datetime.datetime.now() - datetime.timedelta(days=30)
 
 
-def get_stop(start_datetime, stop_time, days=30):
+def get_stop(start_datetime, stop_time, days=7):
     return min(start_datetime + datetime.timedelta(days=days), stop_time)
 
 
@@ -148,7 +144,6 @@ def parse_source_from_url(url):
                       factor=2)
 @utils.ratelimit(10, 1)
 def request(url, params=None):
-
     params = params or {}
     headers = {}
 
@@ -181,7 +176,6 @@ class RequestToCsvAdapter:
 
 
 def sync_installs():
-
     schema = load_schema("raw_data/installations")
     singer.write_schema("installs", schema, [
         "event_time",
@@ -292,7 +286,7 @@ def sync_installs():
     csv_data = RequestToCsvAdapter(request_data)
     reader = csv.DictReader(csv_data, fieldnames)
 
-    next(reader) # Skip the heading row
+    next(reader)  # Skip the heading row
 
     bookmark = from_datetime
     for i, row in enumerate(reader):
@@ -309,8 +303,8 @@ def sync_installs():
     utils.update_state(STATE, "installs", bookmark)
     singer.write_state(STATE)
 
+
 def sync_organic_installs():
-    
     schema = load_schema("raw_data/organic_installs")
     singer.write_schema("organic_installs", schema, [
         "event_time",
@@ -421,7 +415,7 @@ def sync_organic_installs():
     csv_data = RequestToCsvAdapter(request_data)
     reader = csv.DictReader(csv_data, fieldnames)
 
-    next(reader) # Skip the heading row
+    next(reader)  # Skip the heading row
 
     bookmark = from_datetime
     for i, row in enumerate(reader):
@@ -437,7 +431,6 @@ def sync_organic_installs():
 
 
 def sync_in_app_events():
-
     schema = load_schema("raw_data/in_app_events")
     singer.write_schema("in_app_events", schema, [
         "event_time",
@@ -547,7 +540,7 @@ def sync_in_app_events():
         csv_data = RequestToCsvAdapter(request_data)
         reader = csv.DictReader(csv_data, fieldnames)
 
-        next(reader) # Skip the heading row
+        next(reader)  # Skip the heading row
 
         bookmark = from_datetime
         for i, row in enumerate(reader):
@@ -567,17 +560,18 @@ def sync_in_app_events():
 
 
 STREAMS = [
-    Stream("installs", sync_installs),
-    Stream("in_app_events", sync_in_app_events)
+    # Stream("installs", sync_installs),
+    # Stream("in_app_events", sync_in_app_events),
+    Stream("organic_installs", sync_organic_installs)
 ]
 
 
 def get_streams_to_sync(streams, state):
     target_stream = state.get("this_stream")
     result = streams
-    if "organic_installs" in CONFIG:
-        if CONFIG["organic_installs"]:
-            result.append(Stream("organic_installs", sync_organic_installs))
+    # if "organic_installs" in CONFIG:
+    #     if CONFIG["organic_installs"]:
+    #         result.append(Stream("organic_installs", sync_organic_installs))
     if target_stream:
         result = list(itertools.dropwhile(lambda x: x.name != target_stream, streams))
     if not result:
@@ -592,7 +586,7 @@ def do_sync():
     for stream in streams:
         LOGGER.info('Syncing %s', stream.name)
         STATE["this_stream"] = stream.name
-        stream.sync() # pylint: disable=not-callable
+        stream.sync()  # pylint: disable=not-callable
     STATE["this_stream"] = None
     singer.write_state(STATE)
     LOGGER.info("Sync completed")
