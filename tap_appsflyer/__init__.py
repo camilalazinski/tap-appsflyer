@@ -64,7 +64,7 @@ def get_start(key):
     return datetime.datetime.now() - datetime.timedelta(days=30)
 
 
-def get_stop(start_datetime, stop_time, days=7):
+def get_stop(start_datetime, stop_time, days=30):
     return min(start_datetime + datetime.timedelta(days=days), stop_time)
 
 
