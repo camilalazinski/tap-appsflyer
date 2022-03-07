@@ -11,9 +11,9 @@ import attr
 import backoff
 import requests
 import singer
-import singer.stats
-from singer import transform
-from singer import utils
+# import singer.stats
+from tap_appsflyer import transform
+from tap_appsflyer import utils
 
 LOGGER = singer.get_logger()
 SESSION = requests.Session()
@@ -153,9 +153,9 @@ def request(url, params=None):
     req = requests.Request("GET", url, params=params, headers=headers).prepare()
     LOGGER.info("GET %s", req.url)
 
-    with singer.stats.Timer(source=parse_source_from_url(url)) as stats:
-        resp = SESSION.send(req)
-        stats.http_status_code = resp.status_code
+    # with singer.stats.Timer(source=parse_source_from_url(url)) as stats:
+    resp = SESSION.send(req)
+    # stats.http_status_code = resp.status_code
 
     if resp.status_code >= 400:
         LOGGER.error("GET %s [%s - %s]", req.url, resp.status_code, resp.content)
