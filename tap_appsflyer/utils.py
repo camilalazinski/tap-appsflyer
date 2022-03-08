@@ -107,8 +107,7 @@ def parse_args(required_config_keys):
     if args.config:
         args.config = load_json(args.config)
     else:
-        args.config = {'api_token': args.token, 'app_id': args.id }
-    print(args.config)
+        args.config = {'api_token': args.token, 'app_id': args.id}
     if args.state:
         args.state = load_json(args.state)
     else:
