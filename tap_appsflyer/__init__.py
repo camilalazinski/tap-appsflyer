@@ -599,7 +599,7 @@ def main():
             "api_token"
         ])
 
-    config = clean_config(args.config)
+    # config = clean_config(args.config)
     CONFIG.update(config)
 
     if args.state:
