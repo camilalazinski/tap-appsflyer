@@ -594,13 +594,9 @@ def do_sync():
 
 
 def main():
-    args = utils.parse_args(
-        [
-            "app_id",
-            "api_token"
-        ])
-
     print(sys.argv)
+    args = utils.parse_args(["app_id", "api_token"])
+
     # print(args.config)
     # args.config = json.loads(args.config)
 
