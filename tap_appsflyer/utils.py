@@ -98,7 +98,7 @@ def parse_args(required_config_keys):
 
     args = parser.parse_args()
     if args.config:
-        args.config = load_json(args.config)
+        args.config = args.config
     if args.state:
         args.state = load_json(args.state)
     else:
