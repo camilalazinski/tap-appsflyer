@@ -600,7 +600,7 @@ def main():
         ])
 
     # config = clean_config(args.config)
-    CONFIG.update(config)
+    CONFIG.update(args.config)
 
     if args.state:
         STATE.update(args.state)
