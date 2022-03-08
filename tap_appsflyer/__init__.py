@@ -3,7 +3,6 @@
 import csv
 import datetime
 import itertools
-import json
 import os
 import re
 import sys
@@ -594,13 +593,14 @@ def do_sync():
 
 
 def main():
-    print(sys.argv)
-    args = utils.parse_args(["app_id", "api_token"])
+    args = utils.parse_args(
+        [
+            "app_id",
+            "api_token"
+        ])
 
-    # print(args.config)
-    # args.config = json.loads(args.config)
-
-    CONFIG.update(args.config)
+    config = clean_config(args.config)
+    CONFIG.update(config)
 
     if args.state:
         STATE.update(args.state)

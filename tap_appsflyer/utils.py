@@ -80,8 +80,15 @@ def parse_args(required_config_keys):
 
     parser.add_argument(
         '-c', '--config',
-        help='Config file',
-        required=True)
+        help='Config file')
+
+    parser.add_argument(
+        '-t', '--token',
+        help='Token')
+
+    parser.add_argument(
+        '-i', '--id',
+        help='ID')
 
     parser.add_argument(
         '-s', '--state',
@@ -97,7 +104,11 @@ def parse_args(required_config_keys):
         help='Do schema discovery')
 
     args = parser.parse_args()
-
+    if args.config:
+        args.config = load_json(args.config)
+    else:
+        args.config = {'api_token': args.token, 'app_id': args.id }
+    print(args.config)
     if args.state:
         args.state = load_json(args.state)
     else:
