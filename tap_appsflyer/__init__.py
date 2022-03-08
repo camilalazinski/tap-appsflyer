@@ -3,6 +3,7 @@
 import csv
 import datetime
 import itertools
+import json
 import os
 import re
 import sys
@@ -599,7 +600,10 @@ def main():
             "api_token"
         ])
 
-    # config = clean_config(args.config)
+    print(sys.argv)
+    # print(args.config)
+    # args.config = json.loads(args.config)
+
     CONFIG.update(args.config)
 
     if args.state:
