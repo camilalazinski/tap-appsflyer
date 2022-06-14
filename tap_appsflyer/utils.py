@@ -87,6 +87,10 @@ def parse_args(required_config_keys):
         help='Token')
 
     parser.add_argument(
+        '-type', '--type',
+        help='Type')
+
+    parser.add_argument(
         '-i', '--id',
         help='ID')
 

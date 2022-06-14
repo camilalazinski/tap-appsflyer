@@ -561,8 +561,8 @@ def sync_in_app_events():
 
 STREAMS = [
     # Stream("installs", sync_installs),
-    Stream("in_app_events", sync_in_app_events),
-    Stream("organic_installs", sync_organic_installs)
+    # Stream("in_app_events", sync_in_app_events),
+    # Stream("organic_installs", sync_organic_installs)
 ]
 
 
@@ -605,6 +605,13 @@ def main():
     if args.state:
         STATE.update(args.state)
 
+    if args.state:
+        STATE.update(args.state)
+
+    if args.type == "in_app_events":
+        STREAMS.append(Stream("in_app_events", sync_in_app_events))
+    else:
+        STREAMS.append(Stream("organic_installs", sync_organic_installs))
     do_sync()
 
 
