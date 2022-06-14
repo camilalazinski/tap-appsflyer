@@ -610,10 +610,11 @@ def main():
 
     if args.type == "in_app_events":
         STREAMS.append(Stream("in_app_events", sync_in_app_events))
+    if args.type == "installs":
+        STREAMS.append(Stream("installs", sync_installs))
     else:
         STREAMS.append(Stream("organic_installs", sync_organic_installs))
     do_sync()
-
 
 if __name__ == '__main__':
     main()
