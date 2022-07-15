@@ -398,15 +398,15 @@ def sync_organic_installs():
     )
 
     from_datetime = get_start("organic_installs")
-    to_datetime = get_stop(from_datetime, datetime.datetime.now())
+    to_datetime = get_stop(from_datetime, datetime.date.now())
 
     if to_datetime < from_datetime:
         LOGGER.error("to_datetime (%s) is less than from_endtime (%s).", to_datetime, from_datetime)
         return
 
     params = dict()
-    params["from"] = from_datetime.strftime("%Y-%m-%d %H:%M")
-    params["to"] = to_datetime.strftime("%Y-%m-%d %H:%M")
+    params["from"] = from_datetime.strftime("%Y-%m-%d")
+    params["to"] = to_datetime.strftime("%Y-%m-%d")
     params["api_token"] = CONFIG["api_token"]
 
     url = get_url("organic_installs", app_id=CONFIG["app_id"])
