@@ -269,7 +269,7 @@ def sync_installs():
     )
 
     from_datetime = get_start("installs")
-    to_datetime = get_stop(from_datetime, datetime.datetime.now())
+    to_datetime = get_stop(from_datetime, datetime.date.now())
 
     if to_datetime < from_datetime:
         LOGGER.error("to_datetime (%s) is less than from_endtime (%s).", to_datetime, from_datetime)
