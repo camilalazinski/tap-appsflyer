@@ -151,7 +151,7 @@ def request(url, params=None):
         headers["User-Agent"] = CONFIG["user_agent"]
 
     req = requests.Request("GET", url, params=params, headers=headers).prepare()
-    LOGGER.info("GET %s", req.url)
+    LOGGER.info("v1 GET %s", req.url)
 
     # with singer.stats.Timer(source=parse_source_from_url(url)) as stats:
     resp = SESSION.send(req)
