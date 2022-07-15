@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import csv
 import datetime
 import itertools
@@ -46,9 +44,9 @@ def af_datetime_str_to_datetime(s):
     return datetime.datetime.strptime(s.strip(), "%Y-%m-%d %H:%M:%S")
 
 
-def get_restricted_start_date(date: str) -> datetime.date:
+def get_restricted_start_date(date: str) -> datetime.datetime:
     # https://support.appsflyer.com/hc/en-us/articles/207034366-API-Policy
-    restriction_date = datetime.date.today() - datetime.timedelta(days=90)
+    restriction_date = datetime.datetime.now() - datetime.timedelta(days=90)
     start_date = utils.strptime(date)
 
     return max(start_date, restriction_date)
@@ -61,7 +59,7 @@ def get_start(key):
     if "start_date" in CONFIG:
         return get_restricted_start_date(CONFIG["start_date"])
 
-    return datetime.date.today() - datetime.timedelta(days=30)
+    return datetime.datetime.now() - datetime.timedelta(days=30)
 
 
 def get_stop(start_datetime, stop_time, days=30):
@@ -151,7 +149,7 @@ def request(url, params=None):
         headers["User-Agent"] = CONFIG["user_agent"]
 
     req = requests.Request("GET", url, params=params, headers=headers).prepare()
-    LOGGER.info("v1 GET %s", req.url)
+    LOGGER.info("GET %s", req.url)
 
     # with singer.stats.Timer(source=parse_source_from_url(url)) as stats:
     resp = SESSION.send(req)
@@ -269,7 +267,7 @@ def sync_installs():
     )
 
     from_datetime = get_start("installs")
-    to_datetime = get_stop(from_datetime, datetime.date.now())
+    to_datetime = get_stop(from_datetime, datetime.datetime.now())
 
     if to_datetime < from_datetime:
         LOGGER.error("to_datetime (%s) is less than from_endtime (%s).", to_datetime, from_datetime)
@@ -398,15 +396,15 @@ def sync_organic_installs():
     )
 
     from_datetime = get_start("organic_installs")
-    to_datetime = get_stop(from_datetime, datetime.date.today())
+    to_datetime = get_stop(from_datetime, datetime.datetime.now())
 
     if to_datetime < from_datetime:
         LOGGER.error("to_datetime (%s) is less than from_endtime (%s).", to_datetime, from_datetime)
         return
 
     params = dict()
-    params["from"] = from_datetime.strftime("%Y-%m-%d")
-    params["to"] = to_datetime.strftime("%Y-%m-%d")
+    params["from"] = from_datetime.strftime("%Y-%m-%d %H:%M")
+    params["to"] = to_datetime.strftime("%Y-%m-%d %H:%M")
     params["api_token"] = CONFIG["api_token"]
 
     url = get_url("organic_installs", app_id=CONFIG["app_id"])
