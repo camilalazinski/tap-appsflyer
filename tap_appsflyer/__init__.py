@@ -398,7 +398,7 @@ def sync_organic_installs():
     )
 
     from_datetime = get_start("organic_installs")
-    to_datetime = get_stop(from_datetime, datetime.date.now())
+    to_datetime = get_stop(from_datetime, datetime.date.today())
 
     if to_datetime < from_datetime:
         LOGGER.error("to_datetime (%s) is less than from_endtime (%s).", to_datetime, from_datetime)
