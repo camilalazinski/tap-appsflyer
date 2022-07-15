@@ -46,9 +46,9 @@ def af_datetime_str_to_datetime(s):
     return datetime.date.strptime(s.strip(), "%Y-%m-%d")
 
 
-def get_restricted_start_date(date: str) -> datetime.datetime:
+def get_restricted_start_date(date: str) -> datetime.date:
     # https://support.appsflyer.com/hc/en-us/articles/207034366-API-Policy
-    restriction_date = datetime.datetime.now() - datetime.timedelta(days=90)
+    restriction_date = datetime.date.now() - datetime.timedelta(days=90)
     start_date = utils.strptime(date)
 
     return max(start_date, restriction_date)
@@ -61,7 +61,7 @@ def get_start(key):
     if "start_date" in CONFIG:
         return get_restricted_start_date(CONFIG["start_date"])
 
-    return datetime.datetime.now() - datetime.timedelta(days=30)
+    return datetime.date.now() - datetime.timedelta(days=30)
 
 
 def get_stop(start_datetime, stop_time, days=30):
