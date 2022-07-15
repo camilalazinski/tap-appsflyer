@@ -5,7 +5,7 @@ import functools
 import json
 import time
 
-DATETIME_FMT = "%Y-%m-%d"
+DATETIME_FMT = "%Y-%m-%dT%H:%M:%SZ"
 
 
 def strptime(dtime):
