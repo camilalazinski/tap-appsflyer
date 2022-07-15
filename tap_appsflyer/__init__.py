@@ -43,7 +43,7 @@ def clean_config(config: dict) -> dict:
 
 
 def af_datetime_str_to_datetime(s):
-    return datetime.datetime.strptime(s.strip(), "%Y-%m-%d %H:%M:%S")
+    return datetime.date.strptime(s.strip(), "%Y-%m-%d")
 
 
 def get_restricted_start_date(date: str) -> datetime.datetime:
