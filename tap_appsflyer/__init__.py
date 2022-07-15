@@ -276,8 +276,8 @@ def sync_installs():
         return
 
     params = dict()
-    params["from"] = from_datetime.strftime("%Y-%m-%d")
-    params["to"] = to_datetime.strftime("%Y-%m-%d")
+    params["from"] = from_datetime.strftime("%Y-%m-%d %H:%M")
+    params["to"] = to_datetime.strftime("%Y-%m-%d %H:%M")
     params["api_token"] = CONFIG["api_token"]
 
     url = get_url("installs", app_id=CONFIG["app_id"])
@@ -530,8 +530,8 @@ def sync_in_app_events():
     while from_datetime < stop_time:
         LOGGER.info("Syncing data from %s to %s", from_datetime, to_datetime)
         params = dict()
-        params["from"] = from_datetime.strftime("%Y-%m-%d")
-        params["to"] = to_datetime.strftime("%Y-%m-%d")
+        params["from"] = from_datetime.strftime("%Y-%m-%d %H:%M")
+        params["to"] = to_datetime.strftime("%Y-%m-%d %H:%M")
         params["api_token"] = CONFIG["api_token"]
 
         url = get_url("in_app_events", app_id=CONFIG["app_id"])
